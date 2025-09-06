@@ -59,13 +59,16 @@ foreach($query->posts as $post) {
 }
 echo '</div>';
 
-// DEBUG: Pobierz zamówienia bezpośrednio z bazy przez $wpdb
+
+// DEBUG: Zamówienia z HPOS
 global $wpdb;
-$orders_raw = $wpdb->get_results("SELECT ID FROM {$wpdb->posts} WHERE post_type = 'shop_order' ORDER BY ID DESC LIMIT 10");
+$table_wc_orders = $wpdb->prefix . 'wc_orders';
+$table_wcpdf_invoice = $wpdb->prefix . 'wcpdf_invoice_number';
+$orders_hpos = $wpdb->get_results("SELECT * FROM {$table_wc_orders} ORDER BY id DESC LIMIT 10");
 echo '<div style="background:#232a3d;color:#fff;padding:12px 18px;border-radius:8px;margin-bottom:18px;font-size:0.98rem;">';
-echo '<strong>DEBUG: Zamówienia z bazy (ostatnie 10):</strong><br>';
-foreach($orders_raw as $o) {
-    $meta = get_post_meta($o->ID);
-    echo 'ID: '.$o->ID.', Billing email: '.($meta['_billing_email'][0] ?? '').', Status: '.($meta['_order_status'][0] ?? '').'<br>';
+echo '<strong>DEBUG: Zamówienia z HPOS (ostatnie 10):</strong><br>';
+foreach($orders_hpos as $o) {
+    $invoice = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table_wcpdf_invoice} WHERE order_id = %d", $o->id));
+    echo 'ID: '.$o->id.', Status: '.esc_html($o->status).', Billing email: '.esc_html($o->billing_email).', Kwota: '.esc_html($o->total_amount).', Faktura PDF: '.($invoice ? 'TAK' : 'NIE').', Numer faktury: '.($invoice && $invoice->calculated_number ? esc_html($invoice->calculated_number) : 'brak').'<br>';
 }
 echo '</div>';
