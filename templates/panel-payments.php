@@ -15,6 +15,12 @@ if (!function_exists('wc_get_orders')) {
     return;
 }
 $payments = class_exists('Weblu_Payments') ? (new Weblu_Payments())->get_payments($user->ID) : [];
+echo '<div style="background:#232a3d;color:#fff;padding:12px 18px;border-radius:8px;margin-bottom:18px;font-size:0.98rem;">';
+echo '<strong>DEBUG:</strong> Znaleziono '.count($payments).' zamówień.<br>';
+foreach($payments as $p) {
+    echo 'Numer: '.esc_html($p['number']).', Status: '.esc_html($p['status']).', Data: '.esc_html($p['date']).', PDF: '.($p['pdf_url'] ? 'TAK' : 'NIE').'<br>';
+}
+echo '</div>';
 if (empty($payments)) {
     echo '<p>Brak faktur do wyświetlenia.</p>';
 } else {
