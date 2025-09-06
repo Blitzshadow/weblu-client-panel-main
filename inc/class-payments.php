@@ -30,6 +30,7 @@ class Weblu_Payments {
                     }
                 }
                 $orders[] = [
+                    'order_id' => $order->get_id(),
                     'number' => $order->get_order_number(),
                     'date' => $order->get_date_created() ? $order->get_date_created()->date('Y-m-d') : '',
                     'amount' => wc_price($order->get_total()),

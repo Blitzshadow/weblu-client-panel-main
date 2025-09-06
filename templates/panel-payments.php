@@ -35,6 +35,26 @@ if (empty($payments)) {
         echo '<td>';
         if ($p['pdf_url']) {
             echo '<a href="'.esc_url($p['pdf_url']).'" class="weblu-btn" target="_blank">Pobierz fakturę PDF</a> ';
+        } else {
+            // Dynamiczny link AJAX do generowania faktury PDF
+            $access_key = '';
+            // Spróbuj pobrać klucz dostępu z meta zamówienia (jeśli istnieje)
+            if (isset($p['order_id'])) {
+                $meta_access = get_post_meta($p['order_id'], '_wcpdf_access_key', true);
+                if ($meta_access) $access_key = $meta_access;
+            }
+            // Jeśli nie ma order_id, spróbuj pobrać z numeru zamówienia
+            if (!$access_key && isset($p['number'])) {
+                $order_obj = wc_get_order($p['number']);
+                if ($order_obj) {
+                    $meta_access = get_post_meta($order_obj->get_id(), '_wcpdf_access_key', true);
+                    if ($meta_access) $access_key = $meta_access;
+                }
+            }
+            if ($access_key && isset($p['order_id'])) {
+                $ajax_url = admin_url('admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='.$p['order_id'].'&access_key='.$access_key);
+                echo '<a href="'.esc_url($ajax_url).'" class="weblu-btn" target="_blank">Wygeneruj/Pobierz fakturę PDF</a> ';
+            }
         }
         echo '<a href="'.esc_url($p['view_url']).'" class="weblu-btn weblu-btn-secondary" target="_blank">Pokaż zamówienie</a>';
         echo '</td>';
