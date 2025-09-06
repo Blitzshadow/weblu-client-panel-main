@@ -1,9 +1,20 @@
 <?php
 // Widok faktur/płatności
+if (!isset($user) || !is_object($user)) {
+    $user = wp_get_current_user();
+}
 ?>
 <h2>Faktury i płatności</h2>
 <?php
-$payments = (new Weblu_Payments())->get_payments($user->ID);
+if (!class_exists('WooCommerce')) {
+    echo '<p>WooCommerce nie jest aktywne. Faktury nie są dostępne.</p>';
+    return;
+}
+if (!function_exists('wc_get_orders')) {
+    echo '<p>Brak funkcji WooCommerce. Faktury nie są dostępne.</p>';
+    return;
+}
+$payments = class_exists('Weblu_Payments') ? (new Weblu_Payments())->get_payments($user->ID) : [];
 if (empty($payments)) {
     echo '<p>Brak faktur do wyświetlenia.</p>';
 } else {
