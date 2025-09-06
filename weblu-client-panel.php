@@ -58,7 +58,7 @@ class Weblu_Client_Panel {
                 <a href="#">Faktury</a>
                 <a href="#">Powiadomienia</a>
                 <a href="#">Kontakt z supportem</a>
-                <a href="<?php echo wp_logout_url(home_url('/')); ) ?>" class="weblu-btn">Wyloguj</a>
+                <a href="<?php echo wp_logout_url(home_url('/')); ?>" class="weblu-btn">Wyloguj</a>
             </nav>
         </aside>
         <main class="weblu-panel-main">
