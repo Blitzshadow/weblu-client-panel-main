@@ -30,7 +30,7 @@ if (empty($payments)) {
         global $wpdb;
         $table_wcpdf_invoice = $wpdb->prefix . 'wcpdf_invoice_number';
         $invoice = isset($p['order_id']) ? $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table_wcpdf_invoice} WHERE order_id = %d ORDER BY id DESC LIMIT 1", $p['order_id'])) : null;
-        $invoice_number = $invoice ? $invoice->id : '';
+    $invoice_number = $invoice ? $invoice->id : '';
         echo '<tr>';
         echo '<td>'.esc_html($p['number']).'</td>';
         echo '<td>'.esc_html($invoice_number).'</td>';
