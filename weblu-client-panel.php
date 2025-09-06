@@ -46,7 +46,7 @@ class Weblu_Client_Panel {
     <meta charset="UTF-8">
     <title>Panel klienta Weblu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-client-panel.css?v=3">
+    <link rel="stylesheet" href="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-client-panel.css?v=<?php echo rand(1000,9999); ?>">
 </head>
 <body>
     <div class="weblu-client-panel">
