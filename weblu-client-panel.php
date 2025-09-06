@@ -46,29 +46,37 @@ class Weblu_Client_Panel {
     <meta charset="UTF-8">
     <title>Panel klienta Weblu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-client-panel.css?v=2">
+    <link rel="stylesheet" href="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-client-panel.css?v=3">
 </head>
-<body style="background:#181818;">
+<body>
     <div class="weblu-client-panel">
-        <div class="weblu-panel-header">
+        <aside class="weblu-sidebar">
             <img src="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-logo.png" alt="Weblu Logo" class="weblu-logo" />
-            <h1>Witaj, <?php echo esc_html($user->display_name); ?>!</h1>
-        </div>
-        <div class="weblu-panel-body">
-            <ul class="weblu-services-list">
-                <li>(Przykładowa usługa) Hosting WordPress</li>
-                <li>(Przykładowa usługa) Strona firmowa</li>
-            </ul>
-            <hr>
-            <nav>
-                <a href="#">Moje usługi</a> |
-                <a href="#">Dane kontaktowe</a> |
-                <a href="#">Faktury</a> |
-                <a href="#">Powiadomienia</a> |
-                <a href="#">Kontakt z supportem</a> |
-                <a href="<?php echo wp_logout_url(home_url('/')); ?>">Wyloguj</a>
+            <nav class="weblu-nav">
+                <a href="#">Moje usługi</a>
+                <a href="#">Dane kontaktowe</a>
+                <a href="#">Faktury</a>
+                <a href="#">Powiadomienia</a>
+                <a href="#">Kontakt z supportem</a>
+                <a href="<?php echo wp_logout_url(home_url('/')); ) ?>" class="weblu-btn">Wyloguj</a>
             </nav>
-        </div>
+        </aside>
+        <main class="weblu-panel-main">
+            <div class="weblu-panel-header">
+                <h1>Witaj, <?php echo esc_html($user->display_name); ?>!</h1>
+            </div>
+            <section class="weblu-card">
+                <h2 style="color:#ff3ebf; font-size:1.3rem; margin:0 0 12px 0; font-weight:600;">Twoje usługi</h2>
+                <ul class="weblu-services-list">
+                    <li>Hosting WordPress</li>
+                    <li>Strona firmowa</li>
+                </ul>
+            </section>
+            <section class="weblu-card">
+                <h2 style="color:#2176ff; font-size:1.15rem; margin:0 0 12px 0; font-weight:600;">Powiadomienia</h2>
+                <p>Brak nowych powiadomień.</p>
+            </section>
+        </main>
     </div>
 </body>
 </html>
