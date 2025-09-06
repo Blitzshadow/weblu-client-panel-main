@@ -71,11 +71,8 @@ class Weblu_Payments {
         }
         // HPOS: pobieranie zamówień z wc_orders
         $table_wc_orders = $wpdb->prefix . 'wc_orders';
-        $table_wc_orders_meta = $wpdb->prefix . 'wc_orders_meta';
         $results_hpos = $wpdb->get_results($wpdb->prepare(
-            "SELECT o.id FROM {$table_wc_orders} o
-            INNER JOIN {$table_wc_orders_meta} om ON o.id = om.order_id
-            WHERE om.meta_key = '_billing_email' AND om.meta_value = %s",
+            "SELECT id FROM {$table_wc_orders} WHERE billing_email = %s",
             $email
         ));
         foreach($results_hpos as $row) {
