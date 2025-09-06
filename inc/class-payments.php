@@ -4,11 +4,11 @@ class Weblu_Payments {
     public function get_payments($user_id) {
         $user = get_userdata($user_id);
         $email = $user ? $user->user_email : '';
-        // Pobierz zamówienia WooCommerce po meta_key _billing_email
+        // Pobierz zamówienia WooCommerce po meta_key _billing_email, dowolny status
         $args = array(
             'post_type' => 'shop_order',
             'posts_per_page' => 20,
-            'post_status' => array_keys(wc_get_order_statuses()),
+            'post_status' => 'any',
             'meta_query' => array(
                 array(
                     'key' => '_billing_email',
