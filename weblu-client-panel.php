@@ -39,6 +39,15 @@ class Weblu_Client_Panel {
 
     private function get_full_panel_html($user) {
         ob_start();
+        $tab = isset($_GET['tab']) ? $_GET['tab'] : 'main';
+        $tabs = [
+            'main' => 'Panel główny',
+            'services' => 'Moje usługi',
+            'account' => 'Dane kontaktowe',
+            'payments' => 'Faktury',
+            'notifications' => 'Powiadomienia',
+            'support' => 'Kontakt z supportem'
+        ];
         ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -53,29 +62,36 @@ class Weblu_Client_Panel {
         <aside class="weblu-sidebar">
             <img src="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-logo.png" alt="Weblu Logo" class="weblu-logo" />
             <nav class="weblu-nav">
-                <a href="#">Moje usługi</a>
-                <a href="#">Dane kontaktowe</a>
-                <a href="#">Faktury</a>
-                <a href="#">Powiadomienia</a>
-                <a href="#">Kontakt z supportem</a>
+                <?php foreach($tabs as $key => $label): ?>
+                    <a href="?weblu_panel=1&tab=<?php echo $key; ?>"<?php if($tab==$key) echo ' style="background:#2176ff22;color:#2176ff;font-weight:700"'; ?>><?php echo $label; ?></a>
+                <?php endforeach; ?>
                 <a href="<?php echo wp_logout_url(home_url('/')); ?>" class="weblu-btn">Wyloguj</a>
             </nav>
         </aside>
         <main class="weblu-panel-main">
-            <div class="weblu-panel-header">
-                <h1>Witaj, <?php echo esc_html($user->display_name); ?>!</h1>
-            </div>
-            <section class="weblu-card">
-                <h2 style="color:#ff3ebf; font-size:1.3rem; margin:0 0 12px 0; font-weight:600;">Twoje usługi</h2>
-                <ul class="weblu-services-list">
-                    <li>Hosting WordPress</li>
-                    <li>Strona firmowa</li>
-                </ul>
-            </section>
-            <section class="weblu-card">
-                <h2 style="color:#2176ff; font-size:1.15rem; margin:0 0 12px 0; font-weight:600;">Powiadomienia</h2>
-                <p>Brak nowych powiadomień.</p>
-            </section>
+            <?php
+            switch($tab) {
+                case 'services':
+                    include dirname(__FILE__).'/templates/panel-services.php';
+                    break;
+                case 'account':
+                    include dirname(__FILE__).'/templates/panel-account.php';
+                    break;
+                case 'payments':
+                    include dirname(__FILE__).'/templates/panel-payments.php';
+                    break;
+                case 'notifications':
+                    include dirname(__FILE__).'/templates/panel-notifications.php';
+                    break;
+                case 'support':
+                    include dirname(__FILE__).'/templates/panel-support.php';
+                    break;
+                case 'main':
+                default:
+                    include dirname(__FILE__).'/templates/panel-main.php';
+                    break;
+            }
+            ?>
         </main>
     </div>
 </body>
