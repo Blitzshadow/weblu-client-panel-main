@@ -2,11 +2,13 @@
 // Faktury, płatności
 class Weblu_Payments {
     public function get_payments($user_id) {
-        // Pobierz zamówienia WooCommerce użytkownika
+        $user = get_userdata($user_id);
+        $email = $user ? $user->user_email : '';
+        // Pobierz zamówienia WooCommerce użytkownika po e-mailu
         $args = array(
-            'customer_id' => $user_id,
             'limit' => 20,
-            'status' => array('wc-completed', 'wc-processing', 'wc-on-hold', 'wc-pending')
+            'status' => array('wc-completed', 'wc-processing', 'wc-on-hold', 'wc-pending'),
+            'billing_email' => $email
         );
         $orders = wc_get_orders($args);
         $result = [];
