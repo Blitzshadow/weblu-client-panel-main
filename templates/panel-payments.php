@@ -42,3 +42,19 @@ if (empty($payments)) {
     }
     echo '</tbody></table>';
 }
+
+// DEBUG: Wyświetl wszystkie zamówienia i meta dane
+$args = array(
+    'post_type' => 'shop_order',
+    'posts_per_page' => 10,
+    'post_status' => 'any'
+);
+$query = new WP_Query($args);
+echo '<div style="background:#232a3d;color:#fff;padding:12px 18px;border-radius:8px;margin-bottom:18px;font-size:0.98rem;">';
+echo '<strong>DEBUG: Wszystkie zamówienia w bazie (ostatnie 10):</strong><br>';
+foreach($query->posts as $post) {
+    $order = wc_get_order($post->ID);
+    $meta = get_post_meta($post->ID);
+    echo 'ID: '.$post->ID.', Numer: '.($order ? $order->get_order_number() : '').', Status: '.($order ? $order->get_status() : '').', Billing email: '.($meta['_billing_email'][0] ?? '').'<br>';
+}
+echo '</div>';
