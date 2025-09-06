@@ -21,47 +21,39 @@ foreach($payments as $p) {
     echo 'Numer: '.esc_html($p['number']).', Status: '.esc_html($p['status']).', Data: '.esc_html($p['date']).', PDF: '.($p['pdf_url'] ? 'TAK' : 'NIE').'<br>';
 }
 echo '</div>';
-if (empty($payments)) {
+// Wyświetl tylko faktury
+global $wpdb;
+$table_wcpdf_invoice = $wpdb->prefix . 'wcpdf_invoice_number';
+$invoices = $wpdb->get_results("SELECT * FROM {$table_wcpdf_invoice} ORDER BY id DESC LIMIT 20");
+if (empty($invoices)) {
     echo '<p>Brak faktur do wyświetlenia.</p>';
 } else {
     echo '<table class="weblu-table">';
-    echo '<thead><tr><th>Numer zamówienia</th><th>Numer faktury</th><th>Data</th><th>Kwota</th><th>Status</th><th>Akcje</th></tr></thead><tbody>';
-    foreach($payments as $p) {
-        global $wpdb;
-        $table_wcpdf_invoice = $wpdb->prefix . 'wcpdf_invoice_number';
-        $invoice = isset($p['order_id']) ? $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table_wcpdf_invoice} WHERE order_id = %d ORDER BY id DESC LIMIT 1", $p['order_id'])) : null;
-    $invoice_number = $invoice ? $invoice->id : '';
-        echo '<tr>';
-        echo '<td>'.esc_html($p['number']).'</td>';
-        echo '<td>'.esc_html($invoice_number).'</td>';
-        echo '<td>'.esc_html($p['date']).'</td>';
-        echo '<td>'.esc_html($p['amount']).'</td>';
-        echo '<td><span class="weblu-status-'.esc_attr($p['status']).'">'.esc_html($p['status']).'</span></td>';
-        echo '<td>';
-        if ($p['pdf_url']) {
-            echo '<a href="'.esc_url($p['pdf_url']).'" class="weblu-btn" target="_blank">Pobierz fakturę PDF</a> ';
-        } else {
-            // Dynamiczny link AJAX do generowania faktury PDF
-            $access_key = '';
-            // Spróbuj pobrać klucz dostępu z meta zamówienia (jeśli istnieje)
-            if (isset($p['order_id'])) {
-                $meta_access = get_post_meta($p['order_id'], '_wcpdf_access_key', true);
-                if ($meta_access) $access_key = $meta_access;
-            }
-            // Jeśli nie ma order_id, spróbuj pobrać z numeru zamówienia
-            if (!$access_key && isset($p['number'])) {
-                $order_obj = wc_get_order($p['number']);
-                if ($order_obj) {
-                    $meta_access = get_post_meta($order_obj->get_id(), '_wcpdf_access_key', true);
-                    if ($meta_access) $access_key = $meta_access;
-                }
-            }
-            if ($access_key && isset($p['order_id'])) {
-                $ajax_url = admin_url('admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='.$p['order_id'].'&access_key='.$access_key);
-                echo '<a href="'.esc_url($ajax_url).'" class="weblu-btn" target="_blank">Wygeneruj/Pobierz fakturę PDF</a> ';
+    echo '<thead><tr><th>Numer faktury</th><th>ID zamówienia</th><th>Data</th><th>Akcje</th></tr></thead><tbody>';
+    foreach($invoices as $inv) {
+        $order = wc_get_order($inv->order_id);
+        $pdf_url = '';
+        if ($order && function_exists('wpo_wcpdf_get_invoice')) {
+            $invoice_obj = wpo_wcpdf_get_invoice($order);
+            if ($invoice_obj && $invoice_obj->exists()) {
+                $pdf_url = $invoice_obj->get_pdf_url();
             }
         }
-        echo '<a href="'.esc_url($p['view_url']).'" class="weblu-btn weblu-btn-secondary" target="_blank">Pokaż zamówienie</a>';
+        echo '<tr>';
+        echo '<td>'.esc_html($inv->id).'</td>';
+        echo '<td>'.esc_html($inv->order_id).'</td>';
+        echo '<td>'.esc_html($inv->date).'</td>';
+        echo '<td>';
+        if ($pdf_url) {
+            echo '<a href="'.esc_url($pdf_url).'" class="weblu-btn" target="_blank">Pobierz fakturę PDF</a>';
+        } else {
+            // Dynamiczny link AJAX do generowania faktury PDF
+            $access_key = get_post_meta($inv->order_id, '_wcpdf_access_key', true);
+            if ($access_key) {
+                $ajax_url = admin_url('admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='.$inv->order_id.'&access_key='.$access_key);
+                echo '<a href="'.esc_url($ajax_url).'" class="weblu-btn" target="_blank">Wygeneruj/Pobierz fakturę PDF</a>';
+            }
+        }
         echo '</td>';
         echo '</tr>';
     }
