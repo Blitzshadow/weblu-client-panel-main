@@ -61,7 +61,7 @@ if (empty($filtered)) {
         echo '<td>'.esc_html($inv->id).'</td>';
         echo '<td>'.esc_html($inv->order_id).'</td>';
         echo '<td>'.esc_html($inv->date).'</td>';
-        echo '<td>'.esc_html($amount).'</td>';
+        echo '<td>'.$amount.'</td>';
         echo '<td>';
         if ($pdf_url) {
             echo '<a href="'.esc_url($pdf_url).'" class="weblu-btn" target="_blank">Pobierz fakturę PDF</a> ';
