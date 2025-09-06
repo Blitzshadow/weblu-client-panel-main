@@ -63,16 +63,16 @@ if (empty($filtered)) {
         echo '<td>'.esc_html($inv->date).'</td>';
         echo '<td>'.$amount.'</td>';
         echo '<td>';
+        $access_key = get_post_meta($inv->order_id, '_wcpdf_access_key', true);
+        $ajax_url = $access_key ? admin_url('admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='.$inv->order_id.'&access_key='.$access_key) : '';
         if ($pdf_url) {
             echo '<a href="'.esc_url($pdf_url).'" class="weblu-btn" target="_blank">Pobierz fakturę PDF</a> ';
             echo '<a href="'.esc_url($pdf_url).'" class="weblu-btn weblu-btn-secondary" target="_blank">Wyświetl fakturę</a>';
+        } elseif ($ajax_url) {
+            echo '<a href="'.esc_url($ajax_url).'" class="weblu-btn" target="_blank">Wygeneruj/Pobierz fakturę PDF</a> ';
+            echo '<a href="'.esc_url($ajax_url).'" class="weblu-btn weblu-btn-secondary" target="_blank">Wyświetl fakturę</a>';
         } else {
-            $access_key = get_post_meta($inv->order_id, '_wcpdf_access_key', true);
-            if ($access_key) {
-                $ajax_url = admin_url('admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='.$inv->order_id.'&access_key='.$access_key);
-                echo '<a href="'.esc_url($ajax_url).'" class="weblu-btn" target="_blank">Wygeneruj/Pobierz fakturę PDF</a> ';
-                echo '<a href="'.esc_url($ajax_url).'" class="weblu-btn weblu-btn-secondary" target="_blank">Wyświetl fakturę</a>';
-            }
+            echo '<span style="color:#aaa">Brak faktury</span>';
         }
         echo '</td>';
         echo '</tr>';
