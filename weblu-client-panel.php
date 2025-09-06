@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Weblu Client Panel
  * Description: Custom panel for Weblu clients. Displays user's services and info in branded UI.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Author: Blitzshadow
  */
 

@@ -58,3 +58,14 @@ foreach($query->posts as $post) {
     echo 'ID: '.$post->ID.', Numer: '.($order ? $order->get_order_number() : '').', Status: '.($order ? $order->get_status() : '').', Billing email: '.($meta['_billing_email'][0] ?? '').'<br>';
 }
 echo '</div>';
+
+// DEBUG: Pobierz zamówienia bezpośrednio z bazy przez $wpdb
+global $wpdb;
+$orders_raw = $wpdb->get_results("SELECT ID FROM {$wpdb->posts} WHERE post_type = 'shop_order' ORDER BY ID DESC LIMIT 10");
+echo '<div style="background:#232a3d;color:#fff;padding:12px 18px;border-radius:8px;margin-bottom:18px;font-size:0.98rem;">';
+echo '<strong>DEBUG: Zamówienia z bazy (ostatnie 10):</strong><br>';
+foreach($orders_raw as $o) {
+    $meta = get_post_meta($o->ID);
+    echo 'ID: '.$o->ID.', Billing email: '.($meta['_billing_email'][0] ?? '').', Status: '.($meta['_order_status'][0] ?? '').'<br>';
+}
+echo '</div>';
