@@ -24,13 +24,25 @@ echo '</div>';
 // Wyświetl tylko faktury
 global $wpdb;
 $table_wcpdf_invoice = $wpdb->prefix . 'wcpdf_invoice_number';
-$invoices = $wpdb->get_results("SELECT * FROM {$table_wcpdf_invoice} ORDER BY id DESC LIMIT 20");
-if (empty($invoices)) {
+$table_wc_orders = $wpdb->prefix . 'wc_orders';
+$user_email = is_object($user) ? $user->user_email : '';
+$user_id = is_object($user) ? $user->ID : 0;
+$invoices = $wpdb->get_results("SELECT * FROM {$table_wcpdf_invoice} ORDER BY id DESC LIMIT 50");
+$filtered = [];
+foreach($invoices as $inv) {
+    $order = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table_wc_orders} WHERE id = %d", $inv->order_id));
+    if ($order) {
+        if (($order->billing_email && strtolower($order->billing_email) == strtolower($user_email)) || ($order->customer_id && $order->customer_id == $user_id)) {
+            $filtered[] = $inv;
+        }
+    }
+}
+if (empty($filtered)) {
     echo '<p>Brak faktur do wyświetlenia.</p>';
 } else {
     echo '<table class="weblu-table">';
     echo '<thead><tr><th>Numer faktury</th><th>ID zamówienia</th><th>Data</th><th>Akcje</th></tr></thead><tbody>';
-    foreach($invoices as $inv) {
+    foreach($filtered as $inv) {
         $order = wc_get_order($inv->order_id);
         $pdf_url = '';
         if ($order && function_exists('wpo_wcpdf_get_invoice')) {
@@ -47,7 +59,6 @@ if (empty($invoices)) {
         if ($pdf_url) {
             echo '<a href="'.esc_url($pdf_url).'" class="weblu-btn" target="_blank">Pobierz fakturę PDF</a>';
         } else {
-            // Dynamiczny link AJAX do generowania faktury PDF
             $access_key = get_post_meta($inv->order_id, '_wcpdf_access_key', true);
             if ($access_key) {
                 $ajax_url = admin_url('admin-ajax.php?action=generate_wpo_wcpdf&document_type=invoice&order_ids='.$inv->order_id.'&access_key='.$access_key);
