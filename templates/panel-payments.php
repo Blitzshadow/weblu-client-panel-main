@@ -25,10 +25,15 @@ if (empty($payments)) {
     echo '<p>Brak faktur do wyświetlenia.</p>';
 } else {
     echo '<table class="weblu-table">';
-    echo '<thead><tr><th>Numer zamówienia</th><th>Data</th><th>Kwota</th><th>Status</th><th>Akcje</th></tr></thead><tbody>';
+    echo '<thead><tr><th>Numer zamówienia</th><th>Numer faktury</th><th>Data</th><th>Kwota</th><th>Status</th><th>Akcje</th></tr></thead><tbody>';
     foreach($payments as $p) {
+        global $wpdb;
+        $table_wcpdf_invoice = $wpdb->prefix . 'wcpdf_invoice_number';
+        $invoice = isset($p['order_id']) ? $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table_wcpdf_invoice} WHERE order_id = %d ORDER BY id DESC LIMIT 1", $p['order_id'])) : null;
+        $invoice_number = $invoice ? $invoice->id : '';
         echo '<tr>';
         echo '<td>'.esc_html($p['number']).'</td>';
+        echo '<td>'.esc_html($invoice_number).'</td>';
         echo '<td>'.esc_html($p['date']).'</td>';
         echo '<td>'.esc_html($p['amount']).'</td>';
         echo '<td><span class="weblu-status-'.esc_attr($p['status']).'">'.esc_html($p['status']).'</span></td>';
