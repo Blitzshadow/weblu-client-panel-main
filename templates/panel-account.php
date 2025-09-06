@@ -2,9 +2,12 @@
 // Widok i edycja profilu
 ?>
 <h2>Dane kontaktowe</h2>
-<?php
-$account = (new Weblu_Account())->get_account($user->ID);
-echo '<ul>';
-echo '<li>Email: '.esc_html($account['email']).'</li>';
-echo '<li>Telefon: '.esc_html($account['phone']).'</li>';
-echo '</ul>';
+<form class="weblu-form" method="post" action="">
+    <label>Email:<br>
+        <input type="email" name="email" value="<?php echo esc_attr($account['email']); ?>" required>
+    </label><br>
+    <label>Telefon:<br>
+        <input type="text" name="phone" value="<?php echo esc_attr($account['phone']); ?>" pattern="[0-9+\- ]{7,}" required>
+    </label><br>
+    <button class="weblu-btn" type="submit">Zapisz zmiany</button>
+</form>
