@@ -1,6 +1,14 @@
-<div class="dashboard-module">
-    <h1>Płatności</h1>
-    <p>Informacje o płatnościach i fakturach.</p>
+<div class="row">
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Płatności i faktury</h4>
+                <?php
+                // ...istniejąca logika pobierania i wyświetlania faktur...
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
 <?php
 // Widok faktur/płatności

@@ -44,7 +44,13 @@ if (!isset($user) || !is_object($user)) {
             </div>
     </section>
 
-<div class="dashboard-module">
-    <h1>Dashboard główny</h1>
-    <p>Witaj w panelu głównym. Tu znajdziesz podsumowanie swoich usług, powiadomień i aktywności.</p>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Panel główny</h4>
+                <p class="card-text">Witaj w panelu głównym. Tu znajdziesz podsumowanie swoich usług, powiadomień i aktywności.</p>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,6 +1,15 @@
-<div class="dashboard-module">
-    <h1>Konto</h1>
-    <p>Informacje o koncie użytkownika.</p>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Konto</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Email:</strong> <?php echo esc_html($user->user_email ?? ''); ?></li>
+                    <li class="list-group-item"><strong>Login:</strong> <?php echo esc_html($user->user_login ?? ''); ?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 <?php
 // Widok i edycja profilu

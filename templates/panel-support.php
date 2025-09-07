@@ -1,6 +1,12 @@
-<div class="dashboard-module">
-    <h1>Wsparcie</h1>
-    <p>Kontakt i zgłoszenia do wsparcia technicznego.</p>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Wsparcie</h4>
+                <p>Kontakt i zgłoszenia do wsparcia technicznego.</p>
+            </div>
+        </div>
+    </div>
 </div>
 <?php
 // Widok kontaktu z supportem
