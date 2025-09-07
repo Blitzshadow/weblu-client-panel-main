@@ -1,3 +1,7 @@
+<div class="dashboard-module">
+    <h1>Konto</h1>
+    <p>Informacje o koncie użytkownika.</p>
+</div>
 <?php
 // Widok i edycja profilu
 ?>

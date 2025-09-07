@@ -1,4 +1,3 @@
-<?php
 // Widok główny panelu
 if (!isset($user) || !is_object($user)) {
     $user = wp_get_current_user();
@@ -44,3 +43,8 @@ if (!isset($user) || !is_object($user)) {
                 </div>
             </div>
     </section>
+
+<div class="dashboard-module">
+    <h1>Dashboard główny</h1>
+    <p>Witaj w panelu głównym. Tu znajdziesz podsumowanie swoich usług, powiadomień i aktywności.</p>
+</div>

@@ -1,3 +1,7 @@
+<div class="dashboard-module">
+    <h1>Wsparcie</h1>
+    <p>Kontakt i zgłoszenia do wsparcia technicznego.</p>
+</div>
 <?php
 // Widok kontaktu z supportem
 ?>
