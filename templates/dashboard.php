@@ -23,10 +23,11 @@ if (!in_array($page, $allowed_pages)) {
     <title>Weblu Panel</title>
     <link rel="shortcut icon" href="/assets/dashboard/images/favicon.ico" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900">
-    <link rel="stylesheet" type="text/css" href="/assets/dashboard/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/dashboard/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/dashboard/css/dashboard-custom.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/dashboard/css/semantic.css" />
+    <?php $plugin_url = plugin_dir_url(__FILE__); ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo $plugin_url; ?>../assets/dashboard/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $plugin_url; ?>../assets/dashboard/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $plugin_url; ?>../assets/dashboard/css/dashboard-custom.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo $plugin_url; ?>../assets/dashboard/css/semantic.css" />
 </head>
 <body>
 <div class="wrapper">
