@@ -39,64 +39,7 @@ class Weblu_Client_Panel {
 
     private function get_full_panel_html($user) {
         ob_start();
-        $tab = isset($_GET['tab']) ? $_GET['tab'] : 'main';
-        $tabs = [
-            'main' => 'Panel główny',
-            'services' => 'Moje usługi',
-            'account' => 'Dane kontaktowe',
-            'payments' => 'Faktury',
-            'notifications' => 'Powiadomienia',
-            'support' => 'Kontakt z supportem'
-        ];
-        ?>
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Panel klienta Weblu</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-client-panel.css?v=<?php echo rand(1000,9999); ?>">
-</head>
-<body>
-    <div class="weblu-client-panel">
-        <aside class="weblu-sidebar">
-            <img src="<?php echo plugin_dir_url(__FILE__); ?>assets/weblu-logo.png" alt="Weblu Logo" class="weblu-logo" />
-            <nav class="weblu-nav">
-                <?php foreach($tabs as $key => $label): ?>
-                    <a href="?weblu_panel=1&tab=<?php echo $key; ?>"<?php if($tab==$key) echo ' style="background:#2176ff22;color:#2176ff;font-weight:700"'; ?>><?php echo $label; ?></a>
-                <?php endforeach; ?>
-                <a href="<?php echo wp_logout_url(home_url('/')); ?>" class="weblu-btn">Wyloguj</a>
-            </nav>
-        </aside>
-        <main class="weblu-panel-main">
-            <?php
-            switch($tab) {
-                case 'services':
-                    include dirname(__FILE__).'/templates/panel-services.php';
-                    break;
-                case 'account':
-                    include dirname(__FILE__).'/templates/panel-account.php';
-                    break;
-                case 'payments':
-                    include dirname(__FILE__).'/templates/panel-payments.php';
-                    break;
-                case 'notifications':
-                    include dirname(__FILE__).'/templates/panel-notifications.php';
-                    break;
-                case 'support':
-                    include dirname(__FILE__).'/templates/panel-support.php';
-                    break;
-                case 'main':
-                default:
-                    include dirname(__FILE__).'/templates/panel-main.php';
-                    break;
-            }
-            ?>
-        </main>
-    </div>
-</body>
-</html>
-        <?php
+        include dirname(__FILE__).'/templates/dashboard.php';
         return ob_get_clean();
     }
 }
